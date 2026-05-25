@@ -1,0 +1,26 @@
+{
+  "project": "HelloPy",
+  "version": "1.0.1",
+  "location" : "HelloPy/$BUILD_VR",
+  "artifact": "main.py",
+  "build": {
+    "steps": [
+      {
+        "cmd": "cat main.py"
+      }
+    ]
+  },
+  "exec": {
+    "environ": {
+      "A": "D"
+    },
+    "steps": [
+      {
+        "input": [
+          "priyankar"
+        ],
+        "cmd": "python3 main.py"
+      }
+    ]
+  }
+}

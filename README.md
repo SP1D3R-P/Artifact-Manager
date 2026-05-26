@@ -28,6 +28,14 @@ The `a2fclt` binary will be written to `./bin/`.
 ```
 
 ## Quickstart (Minikube)
+
+Ensure your terminal is pointing to the Minikube Docker daemon:
+```sh
+eval $(minikube docker-env)
+echo $DOCKER_HOST
+```
+make sure that `echo $DOCKER_HOST` result is not blank 
+
 1. Start a Minikube tunnel to expose services:
 ```sh
 minikube tunnel

@@ -24,8 +24,12 @@ The `a2fclt` binary will be written to `./bin/`.
 
 2. Run the CLI against a sample project:
 ```sh
-./bin/a2fclt testData/helloPy
+./bin/a2fclt build ./testData/helloPy/
 ```
+```sh
+./bin/a2fclt build ./testData/helloC/
+```
+make sure point to the directory where the config.json is present 
 
 ## Quickstart (Minikube)
 

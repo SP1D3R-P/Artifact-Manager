@@ -1,0 +1,43 @@
+name : 'A2F Manager'
+
+services:
+
+  Builder : 
+    image: builder:latest
+
+    ports:
+      - 8080:8080
+
+    volumes:
+      - code:/code
+      - ./temps/artifacts:/artifacts
+    
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/v1/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  
+  Consumer : 
+    image : consumer:latest
+
+    volumes : 
+      - ./temps/artifacts:/artifacts
+      - ./temps/storage:/storage
+
+    ports:
+      - 9000:9000
+
+    depends_on:
+      Builder:
+        condition: service_healthy
+
+volumes:
+
+  # artifacts : 
+  #   driver: local
+  
+  code:
+    driver: local

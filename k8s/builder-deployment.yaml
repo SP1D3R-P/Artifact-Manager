@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: builder
+  namespace: poc3
+  labels:
+    app: builder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: builder
+  template:
+    metadata:
+      labels:
+        app: builder
+    spec:
+      containers:
+      - name: builder
+        image: builder:latest
+        imagePullPolicy: Never  # Use local Docker Desktop image
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: code
+          mountPath: /code
+        - name: artifacts
+          mountPath: /artifacts
+        # livenessProbe:
+        #   httpGet:
+        #     path: /api/v1/health
+        #     port: 8080
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 10
+        #   timeoutSeconds: 5
+        #   failureThreshold: 3
+        # readinessProbe:
+        #   httpGet:
+        #     path: /api/v1/health
+        #     port: 8080
+        #   initialDelaySeconds: 10
+        #   periodSeconds: 10
+        #   timeoutSeconds: 5
+        #   failureThreshold: 3
+
+      volumes:
+      - name: code
+        emptyDir: {}
+      - name: artifacts
+        persistentVolumeClaim:
+          claimName: artifacts-pvc

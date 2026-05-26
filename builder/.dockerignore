@@ -1,0 +1,5 @@
+.dockerignore
+bin/
+.env
+*.md
+Makefile

@@ -1,0 +1,32 @@
+{
+  "project": "helloC",
+  "version": "1.0.1",
+  "location" : "test/$BUILD_VERSION",
+  "artifact": "main.exe",
+  "build": {
+    "environ": {
+      "OPTIMIZATION_LEVEL": "3"
+    },
+    "steps": [
+      {
+        "cmd": "echo $OPTIMIZATION_LEVEL"
+      },
+      {
+        "cmd": "cc main.c -O$OPTIMIZATION_LEVEL -o main.exe"
+      }
+    ]
+  },
+  "exec": {
+    "environ": {
+      "A": "D"
+    },
+    "steps": [
+      {
+        "input": [
+          "priyankar"
+        ],
+        "cmd": "./main.exe"
+      }
+    ]
+  }
+}

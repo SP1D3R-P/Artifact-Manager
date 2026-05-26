@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+  namespace: poc3
+  labels:
+    app: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      initContainers:
+      - name: wait-for-builder
+        image: busybox:latest
+        command: ['sh', '-c', 'until nc -z builder:8080; do echo waiting for builder; sleep 2; done;']
+      containers:
+      - name: consumer
+        image: consumer:latest
+        imagePullPolicy: Never  # Use local Docker Desktop image
+        ports:
+        - containerPort: 9000
+          name: http
+        volumeMounts:
+        - name: artifacts
+          mountPath: /artifacts
+        - name: storage
+          mountPath: /storage
+      volumes:
+      - name: artifacts
+        persistentVolumeClaim:
+          claimName: artifacts-pvc
+      - name: storage
+        persistentVolumeClaim:
+          claimName: storage-pvc

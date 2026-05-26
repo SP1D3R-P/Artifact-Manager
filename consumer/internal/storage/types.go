@@ -4,10 +4,6 @@ import (
 	"example.com/consumer/internal/a2f"
 )
 
-// type StorageHandler interface {
-// 	StorageHandler
-// }
-
 type BasicArtifactInfo struct {
 	BuildId      string
 	Name         string

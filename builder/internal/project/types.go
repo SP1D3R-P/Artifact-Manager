@@ -34,17 +34,10 @@ type projectConfig struct {
 	Exec ProcessInfo `json:"exec"`
 }
 
-const (
-	PROJECT_GENERIC int = iota
-)
-
 type Project struct {
 	location string
 	config   *projectConfig
-	// This Field store the tpe of the project
-	// Currently there are :
-	// 		* Generic = 0
-	projectType int
+
 	// BUILD_VERSION && PROJECT_NAME
 	envs map[string]string
 

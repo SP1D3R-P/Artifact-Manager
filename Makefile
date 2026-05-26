@@ -1,14 +1,12 @@
 
-CURR_DIR := $(shell pwd ) 
-
 BIN := bin
-BIN_PATH :=$(strip $(CURR_DIR))/$(strip $(BIN))
-
 
 BUILDER := builder
 CONSUMER := consumer
 
 MODULES := $(BUILDER) $(CONSUMER)
+
+A2FCLT := a2fclt
 
 # Tests 
 TEST_DATAS := testData/*
@@ -30,7 +28,8 @@ docker-build:
 	done
 
 build:
-
+	mkdir -p $(BIN)
+	cd $(A2FCLT) && go build -o ../$(BIN)/a2ctl ./cmd
 
 k8-start: docker-build
 	cd k8s && make start

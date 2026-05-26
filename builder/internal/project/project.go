@@ -100,8 +100,5 @@ func (p *Project) BuildProcess() ProcessInfo { return p.config.Build }
 // how to execute the project
 func (p *Project) ExecProcess() ProcessInfo { return p.config.Exec }
 
-// type of the project
-func (p *Project) Type() int { return p.projectType }
-
 // returns the hash of the project
 func (p *Project) Hash() []byte { return []byte{} }

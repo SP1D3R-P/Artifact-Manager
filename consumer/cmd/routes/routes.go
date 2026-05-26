@@ -105,19 +105,6 @@ func (h *APIHandler) getOutputFile(c *gin.Context) {
 // getArtifactFile returns the artifact file (binary) for a specific artifact
 func (h *APIHandler) getArtifactFile(c *gin.Context) {
 	artifactPath := c.Param("artifact_path")
-	if artifactPath == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Artifact path is required",
-		})
-		return
-	}
-
-	if filepath.Base(artifactPath) == "output.txt" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Use /:BuildId/output.txt to access output.txt files",
-		})
-		return
-	}
 
 	artifactFilePath := filepath.Join(h.storagePath, "artifacts", artifactPath)
 	if _, err := os.Stat(artifactFilePath); os.IsNotExist(err) {

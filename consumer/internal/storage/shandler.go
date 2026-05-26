@@ -91,10 +91,8 @@ func (s *basicHandler) SaveArtifact(cnf a2f.ArtifactConf, output, atf []byte) er
 		return fmt.Errorf("failed to create artifact directory: %w", err)
 	}
 
-	configDir := filepath.Join(s.storagePath, "configs")
-	// TODO :: move to initDB
+	configDir := filepath.Join(s.storagePath, "configs", cnf.Metadata.BuildId)
 	if err := os.MkdirAll(configDir, 0755); err != nil {
-		// Ig This is Overkill since all configs go in /storage/config [ so it requres only one time creation ]
 		return fmt.Errorf("failed to create configs directory: %w", err)
 	}
 
@@ -104,7 +102,7 @@ func (s *basicHandler) SaveArtifact(cnf a2f.ArtifactConf, output, atf []byte) er
 		return fmt.Errorf("failed to save artifact file: %w", err)
 	}
 
-	outputPath := filepath.Join(artifactDir, "output.txt")
+	outputPath := filepath.Join(configDir, "output.txt")
 	if err := os.WriteFile(outputPath, output, 0644); err != nil {
 		return fmt.Errorf("failed to save output.txt: %w", err)
 	}

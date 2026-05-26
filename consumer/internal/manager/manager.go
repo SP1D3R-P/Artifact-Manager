@@ -1,6 +1,7 @@
 package a2f_manager
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -44,13 +45,11 @@ func (m *Manager) ProcessArtifact(artifact *a2f.Artifact) error {
 }
 
 func (m *Manager) GetArtifactOutput(buildId string) ([]byte, error) {
-	basicInfo, err := m.storageManager.GetArtifactMetadata(buildId)
-	if err != nil {
-		return nil, err
+	outputFilePath := filepath.Join(internal.StorageFSDir, "configs", buildId, "output.txt")
+	if _, err := os.Stat(outputFilePath); os.IsNotExist(err) {
+		return nil, fmt.Errorf("output file not found for build ID %s", buildId)
 	}
-
-	outputPath := filepath.Join(basicInfo.Location, "output.txt")
-	return os.ReadFile(outputPath)
+	return os.ReadFile(outputFilePath)
 }
 
 func (m *Manager) consume(artifact a2f.Artifact) (a2f.ArtifactConf, []byte, []byte) {

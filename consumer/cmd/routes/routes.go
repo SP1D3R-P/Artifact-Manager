@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	a2f_manager "example.com/consumer/internal/manager"
 	"github.com/gin-gonic/gin"
@@ -27,7 +29,8 @@ func (h *APIHandler) SetupRoutes(router *gin.Engine) {
 	router.GET("/builds/:BuildId", h.getArtifactConf)
 
 	router.GET("/:BuildId/output.txt", h.getOutputFile)
-	router.GET("/:BuildId/:artifact_name", h.getArtifactFile)
+
+	router.GET("/artifacts/*artifact_path", h.getArtifactFile)
 }
 
 // listArtifacts returns all stored artifacts
@@ -101,5 +104,14 @@ func (h *APIHandler) getOutputFile(c *gin.Context) {
 
 // getArtifactFile returns the artifact file (binary) for a specific artifact
 func (h *APIHandler) getArtifactFile(c *gin.Context) {
+	artifactPath := c.Param("artifact_path")
 
+	artifactFilePath := filepath.Join(h.storagePath, "artifacts", artifactPath)
+	if _, err := os.Stat(artifactFilePath); os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Artifact file not found",
+		})
+		return
+	}
+	c.File(artifactFilePath)
 }
